@@ -1,65 +1,131 @@
-#include <bits/stdc++.h>
+// ========
+// bad design
+// ===========
+#include<bits/stdc++.h>
 using namespace std;
-
-class DepositOnlyAccount{
+class account{
     public:
-    virtual void deposit(double amount)=0;
+    virtual void deposit(int num)=0;
+    virtual void withdraw(int num)=0;
 };
-
-class withdrawablelAccount:public DepositOnlyAccount{
-    public:
-    virtual void withdraw(double amount)=0;
-};
-
-class savingsAccount:public withdrawablelAccount{
-    public:
-    double amount;
-    savingsAccount(){
-        amount=0;
+class savingAccount:public account{
+    private:
+    int balance;
+    savingAccount(){
+        balance=0;
     }
-    void deposit(double amount){
-        this->amount+=amount;
+    void deposit(int num){
+        balance+=num;
+        cout<<"updated";
     }
-    void withdraw(double amount){
-        if(this->amount>=amount){
-            this->amount-=amount;
+    void withdraw(int num){
+        if(balance>=num){
+            balance-=num;
+            cout<<"updated";
         }
         else{
-            cout<<"Insufficient balance"<<endl;
+            cout<<"error";
         }
     }
 };
-
-class currentAccount:public withdrawablelAccount{
-    public:
-    double amount;
+class currentAccount:public account{
+    private:
+    int balance;
     currentAccount(){
-        amount=0;
+        balance=0;
     }
-    void deposit(double amount){
-        this->amount+=amount;
+    void deposit(int num){
+        balance+=num;
+        cout<<"updated";
     }
-    void withdraw(double amount){
-        if(this->amount>=amount){
-            this->amount-=amount;
+    void withdraw(int num){
+        if(balance>=num){
+            balance-=num;
+            cout<<"updated";
         }
         else{
-            cout<<"Insufficient balance"<<endl;
+            cout<<"error";
         }
     }
 };
-
-class fixedDepositAccount:public DepositOnlyAccount{
-    public:
-    double amount;
-    fixedDepositAccount(){
-        amount=0;
+class FDAccount:public account{
+    private:
+    int balance;
+    FDAccount(){
+        balance=0;
     }
-    void deposit(double amount){
-        this->amount+=amount;
+    void deposit(int num){
+        balance+=num;
+        cout<<"updated";
+    }
+    void withdraw(int num){
+        cout<<"error";
     }
 };
 
-int main(){
-    return 0;
-}
+// =============
+// good design
+// =============
+
+class nonWithdrawAcc{
+    public:
+    virtual void deposit(int num)=0;
+};
+class withdrawAcc:nonWithdrawAcc{
+    public:
+    virtual void withdraw(int num)=0;
+};
+class FDAcc:public nonWithdrawAcc{
+    private:
+    int balance=0;
+    public:
+    FDAcc(){
+        balance=0;
+    }
+    void deposit(int num){
+        balance+=num;
+        cout<<"DONE";
+    }
+};
+class currentAcc:public withdrawAcc{
+    private:
+    int balance;
+    public:
+    currentAcc(){
+        balance=0;
+    }
+    void deposit(int num){
+        balance+=num;
+        cout<<"DONE";
+    }
+    void withdraw(int num){
+        if(balance>=num){
+            balance-=num;
+            cout<<"updated";
+        }
+        else{
+            cout<<"error";
+        }
+    }
+};
+class savingAcc:public withdrawAcc{
+    private:
+    int balance;
+    public:
+    savingAcc(){
+        balance=0;
+    }
+    void deposit(int num){
+        balance+=num;
+        cout<<"DONE";
+    }
+    void withdraw(int num){
+        if(balance>=num){
+            balance-=num;
+            cout<<"updated";
+        }
+        else{
+            cout<<"error";
+        }
+    }
+};

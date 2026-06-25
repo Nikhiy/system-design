@@ -1,100 +1,89 @@
-#include <bits/stdc++.h>
-using namespace std;
-//bad design----------------
-class product{
-    public:
-    string name;
-    int price;
+// ===============
+// bad design
+// ===============
 
-    product(string name, int price){
-        this->name = name;
-        this->price = price;
+class product{
+    int price;
+    string name;
+    product(int p,string n){
+        price=p;
+        name=n;
     }
 };
-
-class shopping_cart{
+class shoppingCart{
     private:
-    vector<product> products;
+    vector<product*> productList;
     public:
-    void addProduct(product P){
-        products.push_back(P);
+    void addProduct(product* p){
+        productList.push_back(p);
     }
-    vector<product> getProducts(){
-        return products;
+    vector<product*> getProducts(){
+        return productList;
     }
-    double calculateTotal(){
-        double ans=0;
-        for(auto it:products){
-            ans+=it.price;
+    int calculateTotal(){
+        int ans=0;
+        for(auto it:productList){
+            ans=ans+it->price;
         }
         return ans;
     }
     void printInvoice(){
-        cout<<"Invoice: "<<endl;
-        for(auto it:products){
-            cout<<it.name<<" "<<it.price<<endl;
-        }
-        cout<<"Total: "<<calculateTotal()<<endl;
+        cout<<"Printing Invoice...";
     }
     void saveToDb(){
-        cout<<"Saving to database..."<<endl;
+        cout<<"Saving to DB";
     }
 };
 
-//------------------
-
-//--------good design-----------
+// ===========
+// good design
+// ===========
 
 class product{
-    public:
-    string name;
     int price;
-    product(string name, int price){
-        this->name = name;
-        this->price = price;
+    string name;
+    product(int p,string n){
+        price=p;
+        name=n;
     }
 };
-
 class shoppingCart{
+    private:
+    vector<product*> productList;
     public:
-    vector<product> products;
+    void addProduct(product* p){
+        productList.push_back(p);
+    }
+    vector<product*> getProducts(){
+        return productList;
+    }
     int calculateTotal(){
         int ans=0;
-        for(auto it:products){
-            ans+=it.price;
+        for(auto it:productList){
+            ans=ans+it->price;
         }
         return ans;
     }
 };
-
-class printInvoice{
+class invoicePrinter{
+    private:
+    shoppingCart* sc;
     public:
-    shoppingCart* cart;
-    printInvoice(shoppingCart *cart){
-        this->cart = cart;
+    invoicePrinter(shopingCart* sc){
+        this->sc=sc;
     }
-    void printInvoiceList(){
-        cout<<"Invoice: "<<endl;
-        for(auto it:cart->products){
-            cout<<it.name<<" "<<it.price<<endl;
-        }
-        cout<<"Total: "<<cart->calculateTotal()<<endl;
+    void printInvoice(){
+        cout<<"Printing Invoice"
     }
 };
-
-class savevToDb{
+class dbStorage{
+    private:
+    shopping* sc;
     public:
-    shoppingCart* cart;
-    savevToDb(shoppingCart *cart){
-        this->cart = cart;
+    dbStorage(shopingCart* sc){
+        this->sc=sc;
     }
     void saveToDb(){
-        cout<<"Saving to database..."<<endl;
+        cout<<"Saving to DB";
     }
 };
-
-//-----------------
-
-int main(){
-    return 0;
-}

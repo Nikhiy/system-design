@@ -1,71 +1,92 @@
-#include <bits/stdc++.h>
-using namespace std;
-
+// ==========
+// bad design
+// ==========
 class product{
-    public:
-    string name;
     int price;
-    product(string name, int price){
-        this->name = name;
-        this->price = price;
+    string name;
+    product(int p,string n){
+        price=p;
+        name=n;
     }
 };
-
 class shoppingCart{
+    private:
+    vector<product*> productList;
     public:
-    vector<product> products;
-    void addProduct(product P){
-        products.push_back(P);
+    void addProduct(product* p){
+        productList.push_back(p);
     }
-    vector<product> getProducts(){
-        return products;
+    vector<product*> getProducts(){
+        return productList;
     }
-    double calculateTotal(){
-        double ans=0;
-        for(auto it:products){
-            ans+=it.price;
+    int calculateTotal(){
+        int ans=0;
+        for(auto it:productList){
+            ans=ans+it->price;
         }
         return ans;
     }
 };
-
-class invoice{
+class dbStorage{
+    private:
+    shopping* sc;
     public:
-    shoppingCart cart;
-    invoice(shoppingCart cart){
-        this->cart = cart;
+    dbStorage(shopingCart* sc){
+        this->sc=sc;
     }
-    void printInvoice(){
-        cout<<"Invoice: "<<endl;
-        for(auto it:cart.getProducts()){
-            cout<<it.name<<" "<<it.price<<endl;
+    void saveToSQL(){
+        cout<<"Saving to SQL";
+    }
+    void saveToMongo(){
+        cout<<"Saving to mongoDB";
+    }
+};
+
+// ==========
+// good design
+// ==========
+
+class product{
+    int price;
+    string name;
+    product(int p,string n){
+        price=p;
+        name=n;
+    }
+};
+class shoppingCart{
+    private:
+    vector<product*> productList;
+    public:
+    void addProduct(product* p){
+        productList.push_back(p);
+    }
+    vector<product*> getProducts(){
+        return productList;
+    }
+    int calculateTotal(){
+        int ans=0;
+        for(auto it:productList){
+            ans=ans+it->price;
         }
-        cout<<"Total: "<<cart.calculateTotal()<<endl;
+        return ans;
     }
 };
-
 class persistence{
+    private:
+    shoppingCart* cart;
     public:
-    shoppingCart cart;
-    virtual void saveToDb(shoppingCart cart){
-        cout<<"Saving to database..."<<endl;
+    virtual void save(shoppingCart* cart)=0;
+};
+class saveToSql:public persistence{
+    public:
+    void save(shoppingCart* cart){
+        cout<<"Saving to sql";
     }
 };
-
-class persisenceToMongoDb:public persistence{
+class saveToMongo:public persistence{
     public:
-    void saveToDb(shoppingCart cart){
-        cout<<"Saving to MongoDB..."<<endl;
+    void save(shoppingCart* cart){
+        cout<<"Saving to MongoDB";
     }
 };
-
-class persisenceToMySql:public persistence{
-    public:
-    void saveToDb(shoppingCart cart){
-        cout<<"Saving to MySQL..."<<endl;
-    }
-};
-
-int main(){
-    return 0;
-}
