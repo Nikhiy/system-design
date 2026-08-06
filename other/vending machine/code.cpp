@@ -50,7 +50,7 @@ class State{
 };
 class NoMoneyState:public State{
     public:
-    NoMoneyState(m): State(m){}
+    NoMoneyState(VendingMachine* m): State(m){}
     void insertMoney(int amount) override {
         // logic
     }
@@ -60,7 +60,7 @@ class NoMoneyState:public State{
 };
 class MoneyState:public State{
     public:
-    MoneyState(m): State(m){}
+    MoneyState(VendingMachine* m): State(m){}
     void insertMoney(int amount) override {
         // logic
     }
@@ -70,7 +70,7 @@ class MoneyState:public State{
 };
 class DispenceState:public State{
     public:
-    DispenceState(m): State(m){}
+    DispenceState(VendingMachine* m): State(m){}
     void insertMoney(int amount) override {
         // logic
     }
